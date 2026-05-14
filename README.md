@@ -12,10 +12,18 @@ A CLI tool for converting configuration files between JSON and YAML formats.
 
 ## Installation
 
-**Prerequisites:** Go 1.21+
-
+### Using go install (recommended)
 ```bash
-git clone https://github.com/yourusername/goku.git
+go install github.com/Ahsanulk27/goku@latest
+```
+Then use it anywhere on your machine:
+```bash
+goku -i config.json -o yaml
+```
+
+### From source
+```bash
+git clone https://github.com/Ahsanulk27/goku.git
 cd goku
 go build -o goku .
 ```

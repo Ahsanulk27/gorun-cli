@@ -10,7 +10,7 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-func Convert(inputFile string, outputFormat string) error {
+func Convert(inputFile string, outputFormat string, dryRun bool) error {
 	data, err := os.ReadFile(inputFile)
 	if err != nil {
 		return fmt.Errorf(("file not found: %s"), inputFile)
@@ -55,18 +55,33 @@ func Convert(inputFile string, outputFormat string) error {
 		return fmt.Errorf("failed to marshal data: %s", err)
 	}
 
-	// 	Print the output to terminal
-	fmt.Println(string(outputData))
+	// // 	Print the output to terminal
+	// fmt.Println(string(outputData))
 	// Build the output file path
 	dir := filepath.Dir(inputFile)
 	baseName := strings.TrimSuffix(filepath.Base(inputFile), ext)
 	outputPath := filepath.Join(dir, baseName + "." + outputFormat)
+
+	if dryRun {
+		previewData := string(outputData)
+		lines := strings.Split(previewData, "\n")
+		if len(lines) >= 20 {
+			previewData = strings.Join(lines[:20], "\n")
+			fmt.Printf("[dry-run] Preview Output (showing 20 of %d lines). Run without --dry-run to save the full file: \n%s\n...", len(lines), previewData)
+		} else {
+			fmt.Printf("[dry-run] Preview output (run without --dry-run to save the full file:): \n%s", previewData)
+		}
+	} else {
 	// Write the file
-	err = os.WriteFile(outputPath, outputData, 0644)
-	// Check for errors
-	if err != nil {
-		return fmt.Errorf("failed to write file: %s", err)
+		err = os.WriteFile(outputPath, outputData, 0644)
+		// Check for errors
+		if err != nil {
+			return fmt.Errorf("failed to write file: %s", err)
+		}
+		fmt.Printf("✓ output saved as: %s", outputPath)
 	}
+	
+	
 	// Return nil
 	return nil
 }

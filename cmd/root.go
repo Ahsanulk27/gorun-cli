@@ -16,7 +16,7 @@ import (
 
 var inputFile string
 var outputFormat string
-
+var dryRun bool
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "goku",
@@ -34,7 +34,7 @@ to quickly create a Cobra application.`,
 			fmt.Printf("invalid output format, supported formats are json and yaml: %s", outputFormat)
 			os.Exit(1)
 		} 
-		err := internal.Convert(inputFile, outputFormat)
+		err := internal.Convert(inputFile, outputFormat, dryRun)
 		if err != nil {
 			fmt.Printf("conversion failed: %s", err)
 			os.Exit(1)
@@ -64,6 +64,7 @@ func init() {
 	// when this action is called directly.
 	rootCmd.Flags().StringVarP(&inputFile, "input", "i", "", "input file path")
 	rootCmd.Flags().StringVarP(&outputFormat, "output", "o", "", "output format - json or yaml")
+	rootCmd.Flags().BoolVarP(&dryRun, "dry-run", "d", false, "perform a dry run without saving the output file, shows a preview of the output in the terminal")
 	rootCmd.MarkFlagRequired("input")
 	rootCmd.MarkFlagRequired("output")
 }

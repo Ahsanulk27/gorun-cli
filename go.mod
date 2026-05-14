@@ -1,4 +1,4 @@
-module goku
+module github.com/Ahsanulk27/goku
 
 go 1.26.3
 

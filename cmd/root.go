@@ -10,7 +10,7 @@ import (
 
 	"fmt"
 
-	"goku/internal"
+	"github.com/Ahsanulk27/goku/internal"
 )
 
 
